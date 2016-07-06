@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+	<link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
+	<script th:src="@{/webjars/jquery/2.2.4/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+	<style>
+		.jumbotron{
+		    color: #fff;
+		    background-color: #337ab7;
+		    border-color: #337ab7;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+	<div class="jumbotron text-center">
+	  <h1>Game Session Ranking Tool</h1>
+	</div>
+	<div th:if="${message}" class="alert alert-danger">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<p th:text="${message}" />
+	</div>
+	<div class="panel panel-primary">
+		<div class="panel-body">
+			<form class="form-inline" role="form" method="POST" enctype="multipart/form-data" action="/">
+			  <div class="form-group">
+			    <label for="pwd">Choose gaming session log:</label>
+			    <input type="file" class="form-control" name="file"></input>
+			  </div>
+			  <div class="form-group">
+			  	<button type="submit" class="btn btn-default">Upload</button>
+			  </div>
+			</form>
+		</div>
+	</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading text-center" th:if="${match}">
+				<h3>Game Ranking - <span th:text="${match.id}"></span></h3>
+			</div>
+			<div th:if="!${match}" class="panel-body">
+				<h3 th:if="!${match}">Upload a game log.</h3>
+			</div>
+			<div th:if="${match}" class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-striped table-hover table-condensed">
+						<thead>
+							<tr>
+								<th>Player</th>
+								<th>Kills</th>
+								<th>Deaths</th>
+								<th>Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="record : ${match.records}">
+								<td th:inline="text"><span th:if="${record.winner}" class="glyphicon glyphicon-star"></span>[[${record.player.name}]]</td>
+								<td th:text="${record.kills}"></td>
+								<td th:text="${record.deaths}"></td>
+								<td>
+									<button type="button" th:class="'btn btn-info btn-md ' + ${record.id}" data-toggle="modal">Details</button>
+									<script type="text/javascript">
+										var aux = "<span th:inline="text" th:remove="tag">[[${record.id}]]</span>";
+										$('.' + aux).attr('data-target','#'+aux);
+									</script>
+									<div class="modal fade" th:id="${record.id}" role="dialog">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+													<h4 class="modal-title" th:inline="text"><span th:if="${record.winner}" class="glyphicon glyphicon-star"></span>[[${record.player.name}]] - Session Details</h4>
+												</div>
+												<div class="modal-body">
+													<div class="panel panel-primary">
+														<div class="row">
+															<div class="col-md-12" th:inline="text"><span class="glyphicon glyphicon-thumbs-up"></span><strong>Kills:</strong> [[${record.kills}]]</div>
+															<div class="col-md-12" th:inline="text"><span class="glyphicon glyphicon-thumbs-down"></span><strong>Deaths:</strong> [[${record.deaths}]]</div>
+															<div th:if="${record.winner}" class="col-md-12" th:inline="text"><span class="glyphicon glyphicon-heart"></span><strong>Favourite Weapon:</strong> [[${record.favoriteWeapon.name}]]</div>
+															<div class="col-md-12" th:inline="text"><span class="glyphicon glyphicon-screenshot"></span><strong>Best Killing Streak:</strong> [[${record.bestKillingStreak}]]</div>
+															<div class="col-md-12" th:inline="text"><span data-toggle="tooltip" title="NINJA: Win without getting killed! KILLER INSTINCT: 5 kills in a minute!" class="glyphicon glyphicon-fire"></span><strong>Awards:</strong> [[${record.awards}]]</div>
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-info"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function(){
+		    $('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
+</body>
+</html>
