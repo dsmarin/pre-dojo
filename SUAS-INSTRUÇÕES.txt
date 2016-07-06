@@ -1,2 +1,27 @@
-Coloque aqui suas instruções ou comentários que ache útil/relevantes para possamos ler 
-quando estivermos avaliando a sua solução
+  Requisitos de Sistema
+  -------------------
+
+  JDK:
+    1.8 or superior.
+  Maven:
+   3.0.x ou superior para construir e executar os testes automatizados.
+
+  Instalando e executando
+  ------------------------
+
+  1) Download o fonte do GitHub fork [https://github.com/dsmarin/pre-dojo/]:
+	
+  2) Na linha de comando (ex. Cmd.exe on Windows), execute o seguinte do diretório raiz do projeto (pom.xml deve estar neste diretório):
+	C:\[Root-project-folder]> mvn spring-boot:run
+
+  Testando
+  -------
+  
+  1) Na linha de comando (ex. Cmd.exe on Windows), execute o seguinte do diretório raiz do projeto (pom.xml deve estar neste diretório):
+	C:\[Root-project-folder]> mvn test
+	
+  Info
+  ----
+  Este projeto executa em um http-server imbutido e utiliza o SpringMVC/Thymleaf/Bootstrap para fornecer uma interface para upload de um
+  arquivo de log e vizualização do ranking. Ao executar os testes automatizados existe um arquivo de exemplo (o log exposto no problema)
+  utlizado durante a execução;
